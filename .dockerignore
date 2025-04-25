@@ -1,0 +1,6 @@
+main
+.dockerignore
+Dockerfile
+.git*
+LICENSE
+README.md
