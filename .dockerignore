@@ -1,6 +1,15 @@
+# backend
+
 main
 .dockerignore
 Dockerfile
 .git*
 LICENSE
 README.md
+*.sh
+
+# frontend
+
+# (ignore all frontend, and then explicitly allow only dist)
+frontend/*
+!frontend/dist/

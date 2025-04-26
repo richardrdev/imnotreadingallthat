@@ -6,8 +6,11 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.GET("/", func(c *gin.Context){
-		c.JSON(200, gin.H{"message": "hello world"})
+
+	r.Static("/static", "./frontend/dist")
+
+	r.GET("/", func(c *gin.Context) {
+		c.File("./frontend/dist/index.html")
 	})
 
 	r.Run(":8080")
