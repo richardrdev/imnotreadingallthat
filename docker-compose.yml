@@ -1,0 +1,18 @@
+services:
+  backend:
+    profiles: ["production"]
+    build:
+      context: .
+      target: prod
+    ports:
+      - "8080:8080"
+
+  backend-dev:
+    profiles: ["development"]
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8080"

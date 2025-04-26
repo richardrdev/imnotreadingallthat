@@ -1,21 +1,50 @@
-FROM golang:1.22 AS builder
-
+# ========================================
+# Base Layer: Common Config & Dependencies
+# ========================================
+FROM golang:1.24 AS base
 WORKDIR /app
 
 COPY go.mod go.sum ./
 RUN go mod download
 
+
+
+# ==================================
+# Production Layer: Optimized Binary
+# ==================================
+FROM base AS builder
+ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 COPY . .
+RUN go build -buildvcs=false -o main .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main .
-
-FROM alpine:latest
-
+FROM alpine:latest AS prod
 WORKDIR /root/
-
 COPY --from=builder /app/main .
-COPY --from=builder /app/frontend/ ./frontend/
-
-EXPOSE 8080
+COPY --from=builder /app/frontend/dist/ ./frontend/dist/
 
 CMD ["./main"]
+
+
+
+# =========================================
+# Development Layer: Debugging & Hot Reload
+# =========================================
+FROM base AS dev
+
+# Install Node.js, npm, air, chokidar, and bash for hot reload
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+RUN go install github.com/air-verse/air@latest
+RUN npm install -g chokidar-cli
+RUN apt-get update && apt-get install -y bash
+
+ENV SHELL=/bin/sh
+
+COPY . .
+
+RUN go build -buildvcs=false -o /app/.air_tmp/main .
+
+RUN cd frontend && npm install
+WORKDIR /app
+
+CMD ["bash", "start-dev.sh"]

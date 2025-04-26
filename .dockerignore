@@ -7,9 +7,9 @@ Dockerfile
 LICENSE
 README.md
 *.sh
+.air.tmp/
+tmp/
 
 # frontend
 
-# (ignore all frontend, and then explicitly allow only dist)
-frontend/*
-!frontend/dist/
+frontend/node_modules

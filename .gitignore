@@ -6,3 +6,5 @@ dist/
 
 # go/gin/backend
 
+tmp/
+.air_tmp/
