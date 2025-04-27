@@ -1,9 +1,7 @@
 root = "."
-
 tmp_dir = ".air_tmp"
 
-# Ignore unnecessary directories
-ignore_dirs = [".git", ".air_tmp", "frontend/node_modules", "frontend/src"]
 
 [build]
 cmd = "go build -buildvcs=false -o .air_tmp/main ."
+exclude_dir = [".git", ".air_tmp", "frontend/"]

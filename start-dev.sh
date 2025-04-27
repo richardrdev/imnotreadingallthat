@@ -1,20 +1,15 @@
 #!/bin/bash
 
 # Colors just for fun
-YELLOW='\033[0;33m'
 PURPLE='\033[0;35m'
+YELLOW='\033[0;33m'
 NC='\033[0m'
 
-FRONTEND_PREFIX="$(printf "%b[frontend]%b " "$YELLOW" "$NC")"
+# color-coded prefixes for terminal log clarity
 BACKEND_PREFIX="$(printf "%b[backend]%b " "$PURPLE" "$NC")"
+FRONTEND_PREFIX="$(printf "%b[frontend]%b " "$YELLOW" "$NC")"
 
-# frontend watcher
-chokidar "frontend/src" -c "cd frontend && npm run build" \
-  | tee /dev/tty &
-
-
-# backend watcher
-air \
-  | sed "s/^/$BACKEND_PREFIX/"
-
-wait -n
+# run backend and frontend watchers in parallel
+parallel --line-buffer ::: \
+  "air | stdbuf -oL sed 's/^/$BACKEND_PREFIX/'" \
+  "chokidar 'frontend/src' -c 'cd frontend && npm run build' | stdbuf -oL sed 's/^/$FRONTEND_PREFIX/'"

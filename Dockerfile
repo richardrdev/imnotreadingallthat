@@ -31,12 +31,13 @@ CMD ["./main"]
 # =========================================
 FROM base AS dev
 
-# Install Node.js, npm, air, chokidar, and bash for hot reload
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs
-RUN go install github.com/air-verse/air@latest
-RUN npm install -g chokidar-cli
+# Install bash, node, npm, air, chokidar, and parallel for hot reload
 RUN apt-get update && apt-get install -y bash
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt-get install -y nodejs
+RUN apt install -y parallel
+RUN npm install -g chokidar-cli
+RUN go install github.com/air-verse/air@latest
+
 
 ENV SHELL=/bin/sh
 

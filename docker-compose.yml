@@ -8,6 +8,7 @@ services:
       - "8080:8080"
 
   backend-dev:
+    container_name: dev
     profiles: ["development"]
     build:
       context: .
