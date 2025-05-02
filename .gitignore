@@ -8,3 +8,8 @@ dist/
 
 tmp/
 .air_tmp/
+
+
+# other/utility
+
+.env

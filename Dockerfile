@@ -60,5 +60,4 @@ RUN go build -buildvcs=false -o /app/.air_tmp/main .
 COPY ./.air.toml ./
 COPY ./start-dev.sh ./
 
-
 CMD ["bash", "start-dev.sh"]

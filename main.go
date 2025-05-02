@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"os"
 )
 
 func main() {
@@ -13,5 +14,5 @@ func main() {
 		c.File("./frontend/dist/index.html")
 	})
 
-	r.Run(":8080")
+	r.Run(":" + os.Getenv("APP_PORT"))
 }

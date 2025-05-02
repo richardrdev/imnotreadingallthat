@@ -5,7 +5,7 @@ services:
       context: .
       target: prod
     ports:
-      - "8080:8080"
+      - "${APP_PORT}:${APP_PORT}"
 
   backend-dev:
     container_name: dev
@@ -13,7 +13,40 @@ services:
     build:
       context: .
       target: dev
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres  
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      DB_PORT: ${POSTGRES_PORT}
     volumes:
       - .:/app
     ports:
-      - "8080:8080"
+      - "${APP_PORT}:${APP_PORT}"
+    networks:
+      - imnotreadingallthat_network
+
+
+  postgres:
+    build: ./db
+    container_name: postgres
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - imnotreadingallthat_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  imnotreadingallthat_network:
+    driver: bridge
