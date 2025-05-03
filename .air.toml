@@ -1,6 +1,5 @@
 root = "."
-tmp_dir = ".air_tmp"
 
 [build]
-cmd = "go build -buildvcs=false -o .air_tmp/main ."
-exclude_dir = [".git", ".air_tmp", "frontend"]
+cmd = "go build -buildvcs=false -o tmp/main ."
+exclude_dir = [".git", "tmp", "frontend"]

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# build frontend and backend
+cd ./frontend && npm install
+
+cd /app
+
 # Colors just for fun
 PURPLE='\033[0;35m'
 YELLOW='\033[0;33m'

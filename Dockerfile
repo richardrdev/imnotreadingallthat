@@ -41,23 +41,4 @@ RUN go install github.com/air-verse/air@latest
 
 ENV SHELL=/bin/sh
 
-# frontend files first because they'll change infrequently
-COPY ./frontend/ ./frontend/
-
-RUN cd frontend && npm install
-WORKDIR /app
-
-
-# go files next
-COPY ./main.go ./
-# Future go files go here explicitly for build optimization
-# i.e. COPY ./api/ ./api/
-
-RUN go build -buildvcs=false -o /app/.air_tmp/main .
-
-
-# finally, config stuff
-COPY ./.air.toml ./
-COPY ./start-dev.sh ./
-
 CMD ["bash", "start-dev.sh"]
